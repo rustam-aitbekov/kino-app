@@ -154,6 +154,8 @@ TLS: Sectigo chain → USERTrust RSA root, trusted on Android 6 (no custom trust
 - **JSON endpoints need `X-Requested-With: XMLHttpRequest`**, otherwise they return the HTML page.
 - Episode: `GET /show/episode/episode.json?episode=<id>` → `video.url` (**HLS m3u8** on `daknet1.ts.kg`, no cookies
   needed), `video.subtitles` (`.vtt`, opt-in like on the site), `duration`, `overlay` (advert, ignored).
+- **No comments on ts.kg** (checked 2026-11-22: none on show/episode pages, nothing in the JS). Shows have 👍/👎 votes
+  (`fa-thumbs-up"></span> N` in the first `app-show-tags`), shown first on the info line of TsDetailsActivity.
 - Show page `/show/<slug>`: title `id="h-show-title" data-title data-id`, seasons in `app-show-seasons-section-full`
   (`data-season="N"`, episode ids in `id="app-show-episode-title-<id>"`), voices box "Выбрать озвучку" (each
   voice-over is a separate show slug), stills `/shots2/<slug>/N.jpg`.

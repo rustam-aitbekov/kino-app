@@ -73,12 +73,17 @@ class TsDescriptionPresenter : AbstractDetailsDescriptionPresenter() {
         ).joinToString("  ·  ")
 
         val episodes = s.episodes.size
+        // Visitors' votes lead the line, where films show their ratings.
+        val votes = listOfNotNull(s.likes?.let { "👍 $it" }, s.dislikes?.let { "👎 $it" })
+            .joinToString("   ").ifBlank { null }
         val facts = listOfNotNull(
+            votes,
             s.originalName,
             s.category,
             if (s.seasons.size > 1) "Сезонов: ${s.seasons.size}" else null,
             if (episodes > 1) "Серий: $episodes" else s.episodes.firstOrNull()?.duration,
-            s.voice?.let { "Озвучка: $it" },
+            // With several voice-overs the "Озвучка: …" button already says which one this is.
+            s.voice?.takeIf { s.voices.size <= 1 }?.let { "Озвучка: $it" },
         ).joinToString("  ·  ")
         vh.body.text = listOfNotNull(facts.ifBlank { null }, s.description).joinToString("\n\n")
     }

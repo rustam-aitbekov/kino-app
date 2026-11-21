@@ -51,6 +51,9 @@ data class TsShowDetails(
     val frames: List<String>,
     val seasons: List<TsSeason>,
     val voices: List<TsVoice>,
+    /** Visitors' 👍 / 👎 votes on the show page (null if the page has none). */
+    val likes: Int? = null,
+    val dislikes: Int? = null,
 ) {
     val episodes: List<TsEpisode> get() = seasons.flatMap { it.episodes }
     fun toShort() = TsShow(slug, name, poster, listOfNotNull(year, genres.firstOrNull()).joinToString(", "))

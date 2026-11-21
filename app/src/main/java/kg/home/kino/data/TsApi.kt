@@ -198,6 +198,8 @@ object TsApi {
             frames = Regex("""<a href="(/shots2/[^"]+)"""").findAll(shots).map { absolute(it.groupValues[1]) }.toList(),
             seasons = parseSeasons(html),
             voices = parseVoices(html),
+            likes = Regex("""fa-thumbs-up"></span>\s*(\d+)""").find(tags)?.groupValues?.get(1)?.toIntOrNull(),
+            dislikes = Regex("""fa-thumbs-down"></span>\s*(\d+)""").find(tags)?.groupValues?.get(1)?.toIntOrNull(),
         )
     }
 
