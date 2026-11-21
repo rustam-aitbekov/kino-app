@@ -39,10 +39,12 @@ class MovieCardPresenter(private val wide: Boolean = false) : Presenter() {
             setMainImageScaleType(android.widget.ImageView.ScaleType.CENTER_CROP)
             setInfoAreaBackgroundColor(ContextCompat.getColor(context, R.color.surface))
             // Films: year on the first line, the three ratings on the second.
-            // TS.KG: one line, so every card in a row has the same height.
+            // TS.KG: year/genres, then votes · voice-over. Always two lines (even when the second is
+            // empty), so every card in a row has the same height.
             findViewById<TextView>(androidx.leanback.R.id.content_text)?.apply {
                 isSingleLine = false
-                maxLines = if (wide) 1 else 2
+                maxLines = 2
+                if (wide) minLines = 2
             }
             // TS.KG posters are transparent PNGs with the show title printed on top - often in
             // black. Put them on a light backing with a small margin so every title is readable.
@@ -81,7 +83,11 @@ class MovieCardPresenter(private val wide: Boolean = false) : Presenter() {
             }
             is TsShow -> {
                 card.titleText = item.name
-                card.contentText = listOfNotNull(item.info, item.voice).joinToString(" · ")
+                // "2025, Драма, Криминал" / "👍 84  👎 4 · Дубляж"
+                val votes = listOfNotNull(item.likes?.let { "👍 $it" }, item.dislikes?.let { "👎 $it" })
+                    .joinToString("  ").ifBlank { null }
+                val line2 = listOfNotNull(votes, item.voice).joinToString(" · ").ifBlank { null }
+                card.contentText = listOfNotNull(item.info?.let(::fitFirstLine), line2).joinToString("\n")
                 poster = item.poster
             }
             is Progress -> {
@@ -278,4 +284,18 @@ fun commentHeader(c: Comment): String = buildString {
     c.toUser?.let { append(" → ").append(it) }
     c.date?.let { append("  ·  ").append(it) }
     if (c.votes > 0) append("  ·  +").append(c.votes)
+}
+
+/**
+ * "2013, География, Документальный" -> "2013, География": keeps whole comma-separated parts while they
+ * fit one line of a TS.KG card (~25 characters), so the votes line below is never pushed out.
+ */
+internal fun fitFirstLine(info: String, maxChars: Int = 25): String {
+    val parts = info.split(", ")
+    var out = parts.first()
+    for (p in parts.drop(1)) {
+        if (out.length + 2 + p.length > maxChars) break
+        out += ", $p"
+    }
+    return out
 }

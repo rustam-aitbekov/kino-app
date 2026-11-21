@@ -12,6 +12,9 @@ data class TsShow(
     val info: String? = null,
     /** Voice-over label if the site shows one on the card ("Дубляж"). */
     val voice: String? = null,
+    /** Visitors' 👍 / 👎 votes, when the listing shows them (news and search results don't). */
+    val likes: Int? = null,
+    val dislikes: Int? = null,
 ) : Serializable
 
 /** A TS.KG category (Турецкие, Аниме, ...) or, with slug == null, all shows. */

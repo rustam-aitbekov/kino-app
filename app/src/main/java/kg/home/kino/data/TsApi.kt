@@ -232,7 +232,11 @@ object TsApi {
                 // keep it short: year + first two genres
                 ?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() }?.take(3)?.joinToString(", ")
             val voice = Regex("""fa-microphone"></span>\s*([^<]+)""").find(block)?.groupValues?.get(1)?.trim()
-            out.getOrPut(slug) { TsShow(slug, decode(name), poster?.let(::absolute) ?: posterUrl(slug), info, voice) }
+            val likes = Regex("""fa-thumbs-up"></span>\s*(\d+)""").find(block)?.groupValues?.get(1)?.toIntOrNull()
+            val dislikes = Regex("""fa-thumbs-down"></span>\s*(\d+)""").find(block)?.groupValues?.get(1)?.toIntOrNull()
+            out.getOrPut(slug) {
+                TsShow(slug, decode(name), poster?.let(::absolute) ?: posterUrl(slug), info, voice, likes, dislikes)
+            }
         }
         return out.values.toList()
     }
