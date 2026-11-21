@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Кино</string>
+    <string name="picker_title">Что смотрим?</string>
+    <string name="picker_oc_title">OC.KG</string>
+    <string name="picker_oc_sub">Фильмы</string>
+    <string name="picker_ts_title">TS.KG</string>
+    <string name="picker_ts_sub">Сериалы</string>
+
+    <string name="browse_title">OC.KG</string>
+    <string name="tab_bestsellers">Бестселлеры</string>
+    <string name="tab_home">Главная</string>
+    <string name="filter_category">Категория: %1$s</string>
+    <string name="filter_year">Год: %1$s</string>
+    <string name="filter_category_title">Категория</string>
+    <string name="filter_year_title">Год</string>
+    <string name="tab_catalog">Каталог</string>
+    <string name="tab_selections">Подборки</string>
+    <string name="search">Поиск</string>
+    <string name="filter_order">Сортировка: %1$s</string>
+    <string name="filter_genre">Жанр: %1$s</string>
+    <string name="filter_country">Страна: %1$s</string>
+    <string name="filter_all_genres">все</string>
+    <string name="filter_all_countries">все</string>
+    <string name="filter_all">Все</string>
+    <string name="filter_order_title">Сортировка</string>
+    <string name="filter_genre_title">Жанр</string>
+    <string name="filter_country_title">Страна</string>
+    <string name="row_selections">Подборки</string>
+    <string name="row_continue">Продолжить просмотр</string>
+    <string name="row_popular">Популярное сейчас</string>
+    <string name="row_new">Новинки</string>
+    <string name="row_genres">Жанры</string>
+    <string name="all_movies">Все фильмы</string>
+    <string name="loading">Загрузка…</string>
+    <string name="load_error">Не удалось загрузить: %1$s</string>
+
+    <string name="action_play">Смотреть</string>
+    <string name="action_resume">Продолжить с %1$s</string>
+    <string name="action_restart">Сначала</string>
+    <string name="action_files">Выбрать файл (%1$d)</string>
+    <string name="row_frames">Кадры</string>
+    <string name="row_cast">В ролях</string>
+    <string name="row_similar">Похожие фильмы</string>
+    <string name="no_files">У этого фильма нет файлов для просмотра</string>
+    <string name="choose_file">Выберите файл</string>
+
+    <string name="search_hint">Поиск фильмов</string>
+    <string name="search_hint_series">Поиск сериалов</string>
+    <string name="key_space">Пробел</string>
+    <string name="key_clear">Очистить</string>
+    <string name="key_ru">АБВ</string>
+    <string name="key_en">ABC</string>
+    <string name="key_digits">123</string>
+    <string name="search_type_more">Введите ещё букву…</string>
+    <string name="search_searching">Ищем…</string>
+    <string name="search_results">Результаты</string>
+    <string name="search_empty">Ничего не найдено</string>
+
+    <string name="player_error">Ошибка воспроизведения: %1$s</string>
+    <string name="player_resolving">Подготовка видео…</string>
+
+    <string name="ts_browse_title">TS.KG</string>
+    <string name="ts_row_latest">Новые серии</string>
+    <string name="ts_row_new">Новые сериалы</string>
+    <string name="ts_row_popular">Популярные</string>
+    <string name="ts_row_categories">Категории</string>
+    <string name="ts_season">Сезон %1$s</string>
+    <string name="ts_action_play">Смотреть с 1 серии</string>
+    <string name="ts_action_continue">Продолжить: %1$s</string>
+    <string name="ts_action_voice">Озвучка: %1$s</string>
+    <string name="ts_choose_voice">Выберите озвучку</string>
+    <string name="ts_no_episodes">Нет серий для просмотра</string>
+    <string name="ts_continue_here">▶ Продолжить</string>
+    <string name="player_next">Следующая серия</string>
+    <string name="player_subs_on">Субтитры: вкл</string>
+    <string name="player_subs_off">Субтитры: выкл</string>
+</resources>

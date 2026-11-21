@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#E53935</color>
+    <color name="brand_dark">#8E0E16</color>
+    <color name="ts_brand">#1E88E5</color>
+    <color name="ts_brand_dark">#0D3278</color>
+    <color name="background">#101114</color>
+    <color name="surface">#1B1D22</color>
+    <color name="surface_focused">#2A2D35</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B3B7C0</color>
+    <color name="rating">#F5C518</color>
+    <!-- Behind TS.KG posters: they are transparent PNGs whose title text can be black. -->
+    <color name="poster_backing">#E9ECEF</color>
+</resources>

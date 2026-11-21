@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- OC.KG home: top bar like the website (logo · Бестселлеры · Каталог · Подборки ... Поиск), content below. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="48dp"
+        android:paddingEnd="48dp">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="36dp"
+            android:text="@string/browse_title"
+            android:textColor="@color/brand"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tab_bestsellers"
+            style="@style/TopTab"
+            android:text="@string/tab_bestsellers" />
+
+        <TextView
+            android:id="@+id/tab_catalog"
+            style="@style/TopTab"
+            android:text="@string/tab_catalog" />
+
+        <TextView
+            android:id="@+id/tab_selections"
+            style="@style/TopTab"
+            android:text="@string/tab_selections" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/top_search"
+            style="@style/TopTab"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="10dp"
+            android:text="@string/search" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>
