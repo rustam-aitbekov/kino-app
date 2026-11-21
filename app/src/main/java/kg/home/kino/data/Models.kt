@@ -26,6 +26,22 @@ data class Genre(val id: String, val name: String, val count: Int)
 /** Special tile in the genres row that opens the full catalogue. */
 object AllMoviesTile
 
+/** A visitor's comment on an oc.kg film. [createdAt] is "2013-01-05 23:22:23". */
+data class Comment(
+    val id: String,
+    val user: String,
+    val text: String,
+    val createdAt: String?,
+    /** Set when the comment is a reply to someone. */
+    val toUser: String?,
+    val votes: Int,
+) {
+    /** "05.01.2013" */
+    val date: String?
+        get() = createdAt?.let { Regex("""(\d{4})-(\d{2})-(\d{2})""").find(it) }
+            ?.let { "${it.groupValues[3]}.${it.groupValues[2]}.${it.groupValues[1]}" }
+}
+
 /** A "Подборка" - a themed TOP list on oc.kg (catalogue filtered by selection id). */
 data class Selection(val id: String, val name: String, val image: String?) : Serializable
 

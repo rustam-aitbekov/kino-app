@@ -42,6 +42,8 @@
     <string name="row_frames">Кадры</string>
     <string name="row_cast">В ролях</string>
     <string name="row_similar">Похожие фильмы</string>
+    <string name="action_comments">Комментарии (%1$d)</string>
+    <string name="comments_title">Комментарии · %1$s</string>
     <string name="no_files">У этого фильма нет файлов для просмотра</string>
     <string name="choose_file">Выберите файл</string>
 
@@ -75,4 +77,12 @@
     <string name="player_next">Следующая серия</string>
     <string name="player_subs_on">Субтитры: вкл</string>
     <string name="player_subs_off">Субтитры: выкл</string>
+
+    <!-- "6 комментариев · новые сверху" -->
+    <plurals name="comments_count">
+        <item quantity="one">%1$d комментарий · новые сверху</item>
+        <item quantity="few">%1$d комментария · новые сверху</item>
+        <item quantity="many">%1$d комментариев · новые сверху</item>
+        <item quantity="other">%1$d комментария · новые сверху</item>
+    </plurals>
 </resources>

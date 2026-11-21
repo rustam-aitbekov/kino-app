@@ -42,6 +42,12 @@
             android:theme="@style/Theme.Kino.Details" />
 
         <activity
+            android:name=".ui.details.CommentsActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.Kino" />
+
+        <activity
             android:name=".ui.grid.GridActivity"
             android:exported="false"
             android:screenOrientation="landscape"

@@ -84,7 +84,10 @@ ui/
   browse/SelectionsFragment    OC Подборки grid
   ts/TsHomeFragment, TsCatalogFragment (Сортировка/Категория/Жанр/Страна/Год), TsSelectionsFragment   TS tabs
   ts/TsDetailsActivity         show page: actions (Смотреть / Продолжить / Озвучка), one row per season, frames
-  details/…                    OC film page (DetailsSupportFragment); DescriptionPresenter shows IMDb · КиноПоиск · OC.KG
+  details/…                    OC film page (DetailsSupportFragment); DescriptionPresenter shows IMDb · КиноПоиск · OC.KG;
+                               "Комментарии (N)" is the last action button (only when N > 0; the count loads after the
+                               page) and opens details/CommentsActivity: full-text list, newest first, ScrollView of
+                               focusable TextViews so the remote moves comment by comment
   grid/GridActivity.kt         full-screen grid (genre / selection / TS category); CatalogGridFragment also embedded in tabs
   search/SearchActivity.kt     own on-screen keyboard (RU/EN/123) + results grid; no voice search
   player/PlayerActivity.kt     ExoPlayer; films (MP4) and TS episodes (HLS + optional VTT subtitles), auto next episode
@@ -127,8 +130,9 @@ Sort codes for `order`: 0 newest added, 1 by year, 2 IMDb, 9 KinoPoisk, 3 local 
 | `Video.getCatalog` | `offset`, `size`, `genre`, `selection`, `country`, `order` | `{total, movies[]}`, newest first by default (≈5.8k films) |
 | `Video.getGenres` / `getCountries` | none | `{id, name, count}` |
 | `Video.search` | `query` | `{movies[], persones[]}` (covers are tiny 40×60) |
+| `Video.getComments` | `movie_id` | `comments[]{user_name, text (may contain <br>), created_at, to_user_name, votes}`, oldest first; read-only (posting needs login) |
 | `Video.getMovie` | `movie_id` | full details: `covers[{original,thumbnail}]`, `persones[]{roles}`, `files[]`, `other_movies[]` |
-| others seen in `/js/LMS/Video/Action.js` | | getPerson(person_id), getRandomMovie, getComments, hitMovie, getSelections (returns `["1"]`, not useful) |
+| others seen in `/js/LMS/Video/Action.js` | | getPerson(person_id), getRandomMovie, hitMovie, getSelections (returns `["1"]`, not useful) |
 
 **Files / streams:** `files[]` is a tree (`is_dir`, `childs`); `OcApi.flattenFiles` flattens it. Each file has
 `links.license` = `pl.php?player=ftp&uid=…&movieid=…&fileid=…&v=<hash>` and `path`

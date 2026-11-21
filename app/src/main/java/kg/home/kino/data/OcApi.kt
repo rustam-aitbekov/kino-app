@@ -97,6 +97,26 @@ object OcApi {
         return SearchResult(r.optJSONArray("movies").objects().map(::movieShort))
     }
 
+    /** Visitors' comments on a film, newest first (read-only: posting needs a site account). */
+    suspend fun comments(movieId: String): List<Comment> {
+        val r = call("Video.getComments", "movie_id" to movieId) as JSONObject
+        return r.optJSONArray("comments").objects().mapNotNull { c ->
+            val text = c.optStringOrNull("text")
+                ?.replace(Regex("<br\\s*/?>", RegexOption.IGNORE_CASE), "\n")
+                ?.let(::cleanText)
+                ?.replace(Regex("\n{3,}"), "\n\n")
+                ?.ifBlank { null } ?: return@mapNotNull null
+            Comment(
+                id = c.optString("comment_id"),
+                user = c.optStringOrNull("user_name") ?: "гость",
+                text = text,
+                createdAt = c.optStringOrNull("created_at"),
+                toUser = c.optStringOrNull("to_user_name"),
+                votes = c.optString("votes").toIntOrNull() ?: 0,
+            )
+        }.sortedByDescending { it.createdAt ?: "" }
+    }
+
     suspend fun movie(id: String): MovieDetails {
         val r = call("Video.getMovie", "movie_id" to id) as JSONObject
         val m = r.getJSONObject("movie")

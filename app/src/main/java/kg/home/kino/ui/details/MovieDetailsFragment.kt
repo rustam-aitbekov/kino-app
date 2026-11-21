@@ -39,6 +39,8 @@ class MovieDetailsFragment : DetailsSupportFragment() {
 
     private lateinit var movieId: String
     private var movie: MovieDetails? = null
+    /** Number of visitors' comments; 0 until loaded (and when there are none). */
+    private var commentCount = 0
     private lateinit var progressStore: ProgressStore
     private val overviewPresenter = FullWidthDetailsOverviewRowPresenter(DescriptionPresenter()).apply {
         initialState = FullWidthDetailsOverviewRowPresenter.STATE_HALF
@@ -83,7 +85,16 @@ class MovieDetailsFragment : DetailsSupportFragment() {
                 show(m)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), getString(R.string.load_error, e.message), Toast.LENGTH_LONG).show()
+                return@launch
             }
+            // Comments are only counted here, after the page is up, so they don't slow it down.
+            // The "Комментарии (N)" button appears once the count is known (none = no button).
+            commentCount = try {
+                OcApi.comments(movieId).size
+            } catch (e: Exception) {
+                0
+            }
+            movie?.let { updateActions(it) }
         }
     }
 
@@ -118,22 +129,30 @@ class MovieDetailsFragment : DetailsSupportFragment() {
         actions.clear()
         if (m.files.isEmpty()) {
             actions.set(ACTION_PLAY, Action(ACTION_PLAY.toLong(), getString(R.string.no_files)))
-            return
-        }
-        val p = progressStore.get(m.id)
-        if (p != null) {
-            actions.set(ACTION_RESUME, Action(ACTION_RESUME.toLong(), getString(R.string.action_resume, formatTime(p.positionMs))))
-            actions.set(ACTION_RESTART, Action(ACTION_RESTART.toLong(), getString(R.string.action_restart)))
         } else {
-            actions.set(ACTION_PLAY, Action(ACTION_PLAY.toLong(), getString(R.string.action_play)))
+            val p = progressStore.get(m.id)
+            if (p != null) {
+                actions.set(ACTION_RESUME, Action(ACTION_RESUME.toLong(), getString(R.string.action_resume, formatTime(p.positionMs))))
+                actions.set(ACTION_RESTART, Action(ACTION_RESTART.toLong(), getString(R.string.action_restart)))
+            } else {
+                actions.set(ACTION_PLAY, Action(ACTION_PLAY.toLong(), getString(R.string.action_play)))
+            }
+            if (m.files.size > 1) {
+                actions.set(ACTION_FILES, Action(ACTION_FILES.toLong(), getString(R.string.action_files, m.files.size)))
+            }
         }
-        if (m.files.size > 1) {
-            actions.set(ACTION_FILES, Action(ACTION_FILES.toLong(), getString(R.string.action_files, m.files.size)))
+        // SparseArrayObjectAdapter orders by key, so this stays the last button.
+        if (commentCount > 0) {
+            actions.set(ACTION_COMMENTS, Action(ACTION_COMMENTS.toLong(), getString(R.string.action_comments, commentCount)))
         }
     }
 
     private fun onAction(action: Action) {
         val m = movie ?: return
+        if (action.id.toInt() == ACTION_COMMENTS) {
+            startActivity(CommentsActivity.intent(requireContext(), m.id, m.name))
+            return
+        }
         if (m.files.isEmpty()) return
         when (action.id.toInt()) {
             ACTION_PLAY -> play(m, m.files.first(), resume = false)
@@ -194,6 +213,7 @@ class MovieDetailsFragment : DetailsSupportFragment() {
         private const val ACTION_RESUME = 2
         private const val ACTION_RESTART = 3
         private const val ACTION_FILES = 4
+        private const val ACTION_COMMENTS = 5
 
         fun newInstance(movieId: String) = MovieDetailsFragment().apply {
             arguments = Bundle().apply { putString(ARG_ID, movieId) }

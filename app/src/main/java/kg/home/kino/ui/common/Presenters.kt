@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kg.home.kino.R
 import kg.home.kino.data.AllMoviesTile
+import kg.home.kino.data.Comment
 import kg.home.kino.data.Genre
 import kg.home.kino.data.MovieShort
 import kg.home.kino.data.Person
@@ -268,4 +269,13 @@ class EpisodeCardPresenter : Presenter() {
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {}
+}
+
+
+/** "user → other · 05.01.2013 · +3" */
+fun commentHeader(c: Comment): String = buildString {
+    append(c.user)
+    c.toUser?.let { append(" → ").append(it) }
+    c.date?.let { append("  ·  ").append(it) }
+    if (c.votes > 0) append("  ·  +").append(c.votes)
 }
