@@ -1,4 +1,5 @@
-# Every push to main: build the release APK and publish it as a GitHub Release (tag v1.0.<commit count>).
+# Every pull request merged into main: build the release APK and publish it as a GitHub Release
+# (tag v1.0.<commit count>). Direct pushes to main don't release; start it by hand (workflow_dispatch) if needed.
 #
 # The APK must be signed with the same key as the copy installed on the TV, otherwise Android refuses to
 # update it. The release build uses the debug signing config, so the owner's debug keystore is stored in
@@ -7,7 +8,8 @@
 name: Release APK
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [main]
   workflow_dispatch:
 
@@ -20,10 +22,16 @@ concurrency:
 
 jobs:
   release:
+    # "closed" also fires for PRs closed without merging: skip those
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env:
+      # the commit the merge put on main, or the current commit for a manual run
+      RELEASE_SHA: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ env.RELEASE_SHA }}
           fetch-depth: 0          # full history: versionCode = commit count
 
       - uses: actions/setup-java@v4
@@ -60,9 +68,11 @@ jobs:
         with:
           tag_name: v${{ steps.apk.outputs.version }}
           name: Кино ${{ steps.apk.outputs.version }}
-          target_commitish: ${{ github.sha }}
+          target_commitish: ${{ env.RELEASE_SHA }}
           body: |
-            ${{ github.event.head_commit.message }}
+            ${{ github.event.pull_request.title || 'Manual build' }}
+
+            ${{ github.event.pull_request.body }}
 
             Install on the TV: `adb install -r kino-${{ steps.apk.outputs.version }}.apk`
           files: kino-${{ steps.apk.outputs.version }}.apk
