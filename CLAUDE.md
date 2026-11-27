@@ -198,4 +198,6 @@ TLS: Sectigo chain → USERTrust RSA root, trusted on Android 6 (no custom trust
   `enableOnBackInvokedCallback="false"`, because with targetSdk 36 Android 16 would otherwise switch to predictive back
   and stop sending `KEYCODE_BACK`, which our Back handling needs. Gamepad `BUTTON_A` counts as OK. Keep sizes in dp
   (TVs differ in density).
-- The repo has a GitHub remote (`origin`, `rustam-aitbekov/kino-app`). Commit or push only when the owner asks.
+- The repo has a GitHub remote (`origin`, `rustam-aitbekov/kino-app`, public). Commit or push only when the owner asks.
+  `main` is protected by the ruleset `cicd` (PR required, 0 approvals, no force push or deletion): push a branch and
+  open a PR with `gh pr create`; the owner merges it, which publishes the release APK.
