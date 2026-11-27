@@ -57,6 +57,9 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 adb shell am start -n kg.home.kino/.ui.picker.PickerActivity
 ```
 Release builds are signed with the debug key (`signingConfig = debug`). It's for personal sideloading only.
+versionCode = git commit count (versionName `1.0.<count>`). **GitHub Actions** (`.github/workflows/release.yml`) builds
+the release APK on every push to main and publishes a GitHub Release `v1.0.<count>` with `kino-1.0.<count>.apk`; it signs
+with the owner's debug keystore from the secret `DEBUG_KEYSTORE_BASE64`, so CI APKs install over local builds.
 `tools/make-icons.ps1` regenerates `res/drawable-nodpi/banner.png` (320×180 TV banner) and `icon.png`.
 Keep that script **ASCII-only** (Windows PowerShell 5.1 misreads non-BOM UTF-8; Cyrillic is built from char codes).
 
@@ -191,4 +194,4 @@ TLS: Sectigo chain → USERTrust RSA root, trusted on Android 6 (no custom trust
   from `onStart`, which also removes leanback's "Up → title" focus rule so Up reaches our tabs/filter buttons.
 - `PlayerView.setControllerAnimationEnabled(false)`: the default hide animation only handles media3's standard ids,
   so custom views (title, our buttons) disappeared at different times.
-- The repo has a GitHub remote (`origin`, `rustam-aitbekov/oc-kg`). Commit or push only when the owner asks.
+- The repo has a GitHub remote (`origin`, `rustam-aitbekov/kino-app`). Commit or push only when the owner asks.

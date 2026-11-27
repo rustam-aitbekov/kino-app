@@ -2,6 +2,11 @@ plugins {
     id("com.android.application")
 }
 
+val commitCount: Int = providers.exec {
+    commandLine("git", "rev-list", "--count", "HEAD")
+    isIgnoreExitValue = true
+}.standardOutput.asText.get().trim().toIntOrNull() ?: 1
+
 android {
     namespace = "kg.home.kino"
     compileSdk = 36
@@ -10,8 +15,10 @@ android {
         applicationId = "kg.home.kino"
         minSdk = 23          // Skyworth 43G6 runs Android 6.0.1
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        // Version = number of commits, so every build from a newer commit (local or GitHub Actions)
+        // has a higher versionCode and installs over the previous one.
+        versionCode = commitCount
+        versionName = "1.0.$commitCount"
     }
 
     buildTypes {
