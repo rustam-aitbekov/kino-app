@@ -72,6 +72,9 @@ class PlayerActivity : FragmentActivity() {
     private val isSeries get() = intent.hasExtra(EXTRA_TS_SLUG)
 
     private val handler = Handler(Looper.getMainLooper())
+
+    /** Time of the last automatic recovery from a playback error (see onPlayerError). */
+    private var lastRetryAt = 0L
     private val saver = object : Runnable {
         override fun run() {
             saveProgress()
@@ -229,7 +232,7 @@ class PlayerActivity : FragmentActivity() {
             .setConnectTimeoutMs(20_000)
             .setReadTimeoutMs(30_000)
 
-        val p = ExoPlayer.Builder(this)
+        val p = ExoPlayer.Builder(this, SafeRenderersFactory(this))
             .setMediaSourceFactory(DefaultMediaSourceFactory(http))
             .setSeekBackIncrementMs(10_000)
             .setSeekForwardIncrementMs(10_000)
@@ -247,6 +250,13 @@ class PlayerActivity : FragmentActivity() {
             }
 
             override fun onPlayerError(error: PlaybackException) {
+                // Decoder / network hiccups: retry once from the same position before giving up.
+                val now = System.currentTimeMillis()
+                if (now - lastRetryAt > 30_000) {
+                    lastRetryAt = now
+                    p.prepare()
+                    return
+                }
                 showStatus(getString(R.string.player_error, error.errorCodeName), loading = false)
             }
         })

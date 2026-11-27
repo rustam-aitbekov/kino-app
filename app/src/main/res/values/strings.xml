@@ -28,6 +28,10 @@
     <string name="filter_country_title">Страна</string>
     <string name="row_selections">Подборки</string>
     <string name="row_continue">Продолжить просмотр</string>
+    <string name="row_continue_hint">удерживайте OK — убрать из списка</string>
+    <string name="continue_remove_title">Убрать из «Продолжить просмотр»?</string>
+    <string name="continue_remove_yes">Убрать</string>
+    <string name="continue_remove_no">Отмена</string>
     <string name="row_popular">Популярное сейчас</string>
     <string name="row_new">Новинки</string>
     <string name="row_genres">Жанры</string>

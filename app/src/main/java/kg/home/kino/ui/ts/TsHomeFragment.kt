@@ -1,6 +1,7 @@
 package kg.home.kino.ui.ts
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -12,6 +13,10 @@ import kg.home.kino.R
 import kg.home.kino.data.ProgressStore
 import kg.home.kino.data.TsApi
 import kg.home.kino.ui.common.GenreCardPresenter
+import kg.home.kino.ui.common.ContinueCardPresenter
+import kg.home.kino.ui.common.HintHeaderItem
+import kg.home.kino.ui.common.HintRowHeaderPresenter
+import kg.home.kino.ui.common.showRowHintsWhenFocused
 import kg.home.kino.ui.common.MovieCardPresenter
 import kg.home.kino.ui.common.Nav
 import kg.home.kino.ui.common.SpacedListRowPresenter
@@ -24,8 +29,13 @@ import kotlinx.coroutines.launch
  */
 class TsHomeFragment : RowsSupportFragment() {
 
-    private val rows = ArrayObjectAdapter(SpacedListRowPresenter())
+    private val rowHeaders = HintRowHeaderPresenter()
+    private val rows = ArrayObjectAdapter(SpacedListRowPresenter().apply { headerPresenter = rowHeaders })
     private val cards = MovieCardPresenter(wide = true)
+    private val continueCards = ContinueCardPresenter(cards) { p ->
+        progress.remove(p.movieId)
+        refreshContinueRow()
+    }
     private var continueRow: ListRow? = null
     private lateinit var progress: ProgressStore
 
@@ -35,6 +45,11 @@ class TsHomeFragment : RowsSupportFragment() {
         adapter = rows
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ -> Nav.open(requireContext(), item) }
         load()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showRowHintsWhenFocused(rowHeaders)
     }
 
     override fun onResume() {
@@ -81,8 +96,8 @@ class TsHomeFragment : RowsSupportFragment() {
             continueRow = null
             return
         }
-        val a = ArrayObjectAdapter(cards).apply { addAll(0, items) }
-        val row = ListRow(HeaderItem(getString(R.string.row_continue)), a)
+        val a = ArrayObjectAdapter(continueCards).apply { addAll(0, items) }
+        val row = ListRow(HintHeaderItem(getString(R.string.row_continue), getString(R.string.row_continue_hint)), a)
         if (existing != null) rows.replace(rows.indexOf(existing), row) else rows.add(0, row)
         continueRow = row
     }

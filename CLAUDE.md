@@ -11,7 +11,7 @@ UI language is Russian; keep user-facing strings in Russian (`res/values/strings
 | | |
 |---|---|
 | TV | Skyworth **43G6**, Android TV **6.0.1 (API 23)**, MediaTek SoC, **armeabi-v7a** (32-bit), 1920×1080, density 320 (xhdpi → 960×540 dp) |
-| IP / adb | **`192.168.0.105:5555`** (home Wi-Fi, PC is on `192.168.0.x`). Connect: `adb connect 192.168.0.105:5555` |
+| IP / adb | **`192.168.0.104:5555`** (home Wi-Fi, PC is on `192.168.0.x`). Connect: `adb connect 192.168.0.104:5555` |
 | adb binary | `C:\Users\rus\AppData\Local\Microsoft\WinGet\Packages\Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe\platform-tools\adb.exe` (on PATH as `adb`) |
 | System WebView | **106.0.5249.126** (installed by us; last version for Android 6). Chrome/WebView ≥107 needs Android 7 |
 | Play Store | Updated to **49.6.14** (last for API 23). Official YouTube does **not** support Android 6 |
@@ -91,9 +91,15 @@ ui/
   grid/GridActivity.kt         full-screen grid (genre / selection / TS category); CatalogGridFragment also embedded in tabs
   search/SearchActivity.kt     own on-screen keyboard (RU/EN/123) + results grid; no voice search
   player/PlayerActivity.kt     ExoPlayer; films (MP4) and TS episodes (HLS + optional VTT subtitles), auto next episode
+  player/SafeRenderersFactory  forces ExoPlayer's set-output-surface workaround: the MTK decoder fails setOutputSurface
+                               (CodecException 0x80000000 → ERROR_CODE_FAILED_RUNTIME_CHECK) when the surface changes;
+                               PlayerActivity also retries once (prepare() at the same position) after any playback error
   common/Presenters.kt         MovieCardPresenter (wide = TS 5:4 posters on a light backing), Genre/Episode/Frame/Person
   common/Spacing.kt            SpacedListRowPresenter / SpacedGridPresenter (TS rows and grids)
   common/EmbeddedGrid.kt       hideBuiltInTitle(): collapse a VerticalGridSupportFragment's own title bar inside a tab
+  common/ContinueRow.kt        "Продолжить просмотр" rows (OC + TS): hold OK on a card → dialog to remove it (detected from key
+                               repeats; adb `input keyevent --longpress` works). HintRowHeaderPresenter shows a faded right-aligned
+                               hint only while focus is in that row (showRowHintsWhenFocused)
   common/Nav.kt, Format.kt     click routing; formatTime(), formatRating(), ratingsLine()
 ```
 Themes: `res/values/themes.xml` (Theme.Kino.* on top of Theme.Leanback.*). Brand red `#E53935`, TS blue `#1E88E5`.
