@@ -69,7 +69,8 @@ class ContinueCardPresenter(
     }
 
     private fun isConfirmKey(keyCode: Int) = keyCode == KeyEvent.KEYCODE_DPAD_CENTER ||
-        keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER
+        keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER ||
+        keyCode == KeyEvent.KEYCODE_BUTTON_A
 
     private fun confirmRemove(context: Context, p: Progress) {
         AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert)

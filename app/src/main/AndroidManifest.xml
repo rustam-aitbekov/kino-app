@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,14 +9,19 @@
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
 
+    <!-- enableOnBackInvokedCallback=false: with targetSdk 36, Android 16+ would turn on predictive back and stop
+         sending KEYCODE_BACK to the app. MainActivity, PlayerActivity and SearchActivity rely on that key
+         (content -> tabs, hide player controls, results -> keyboard). -->
     <application
         android:allowBackup="false"
         android:banner="@drawable/banner"
+        android:enableOnBackInvokedCallback="false"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/Theme.Kino"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="33">
 
         <!-- Start screen: choose OC.KG (films) or TS.KG (series) -->
         <activity

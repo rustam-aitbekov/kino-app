@@ -194,4 +194,8 @@ TLS: Sectigo chain → USERTrust RSA root, trusted on Android 6 (no custom trust
   from `onStart`, which also removes leanback's "Up → title" focus rule so Up reaches our tabs/filter buttons.
 - `PlayerView.setControllerAnimationEnabled(false)`: the default hide animation only handles media3's standard ids,
   so custom views (title, our buttons) disappeared at different times.
+- Other TVs (Android 6+ / Google TV): the APK has no native libs (any ABI). The manifest sets
+  `enableOnBackInvokedCallback="false"`, because with targetSdk 36 Android 16 would otherwise switch to predictive back
+  and stop sending `KEYCODE_BACK`, which our Back handling needs. Gamepad `BUTTON_A` counts as OK. Keep sizes in dp
+  (TVs differ in density).
 - The repo has a GitHub remote (`origin`, `rustam-aitbekov/kino-app`). Commit or push only when the owner asks.

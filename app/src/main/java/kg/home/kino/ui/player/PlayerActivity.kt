@@ -304,7 +304,8 @@ class PlayerActivity : FragmentActivity() {
                     playerView.findViewById<View>(androidx.media3.ui.R.id.exo_progress)?.requestFocus()
                     return true
                 }
-                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER -> if (!controlsVisible) {
+                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER,
+                KeyEvent.KEYCODE_BUTTON_A -> if (!controlsVisible) {
                     if (p.isPlaying) p.pause() else p.play()
                     playerView.showController()
                     playerView.findViewById<View>(androidx.media3.ui.R.id.exo_play_pause)?.requestFocus()
